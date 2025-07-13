@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class InitService {
-    constructor() { }
+  constructor() {}
 
-    init(): void {
-        console.debug('Initializing stuff ...');
-    }
-    
+  init(): void {
+    console.debug('Initializing stuff ...');
+  }
 }

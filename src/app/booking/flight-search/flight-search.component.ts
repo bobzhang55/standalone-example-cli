@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, signal, untracked } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+  untracked,
+} from '@angular/core';
 import { Flight, FlightService } from '@demo/data';
 import { FormsModule } from '@angular/forms';
 import { CityValidator } from '../../shared/city.validator';
@@ -18,26 +27,20 @@ import { rxResource } from 'src/app/shared/resource/rx-resource';
   templateUrl: './flight-search.component.html',
   standalone: true,
   // changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    FormsModule,
-    CityValidator,
-    FlightCardComponent,
-    JsonPipe
-],
+  imports: [FormsModule, CityValidator, FlightCardComponent, JsonPipe],
 })
 export class FlightSearchComponent implements OnInit {
   private flightService = inject(FlightService);
   private dialog = inject(MatDialog);
 
   constructor() {
-
     effect(() => {
       // auto-tracking
       this.logRoute();
     });
 
     // effect(() => {
-    //   // loading flag setzen 
+    //   // loading flag setzen
     //   const from = this.from();
     //   const to = this.to();
 
@@ -47,7 +50,7 @@ export class FlightSearchComponent implements OnInit {
     //     });
     //   });
 
-    // // loading flag auf false 
+    // // loading flag auf false
 
     // });
 
@@ -73,7 +76,7 @@ export class FlightSearchComponent implements OnInit {
 
   filter = computed(() => ({
     from: this.from(),
-    to: this.to()
+    to: this.to(),
   }));
 
   // --- ----- Wien -----
@@ -85,12 +88,16 @@ export class FlightSearchComponent implements OnInit {
     request: this.filter,
     loader: async (param) => {
       //if (param.previous.status !== 'idle') {
-        const filter = param.request;
-        await wait(300, param.abortSignal);
-        return await this.flightService.findPromise(filter.from, filter.to, param.abortSignal);
+      const filter = param.request;
+      await wait(300, param.abortSignal);
+      return await this.flightService.findPromise(
+        filter.from,
+        filter.to,
+        param.abortSignal
+      );
       //}
       //return Promise.resolve(undefined);
-    }
+    },
   });
 
   // Experimentell ab Angular 19
@@ -99,12 +106,14 @@ export class FlightSearchComponent implements OnInit {
     loader: (param) => {
       const filter = param.request;
       return this.flightService.find(filter.from, filter.to);
-    }
+    },
   });
 
   flights = computed(() => this.flightResource.value() ?? []);
 
-  delayedFlights = computed(() => toDelayed(this.flights(), this.delayInMinutes()));
+  delayedFlights = computed(() =>
+    toDelayed(this.flights(), this.delayInMinutes())
+  );
 
   isLoading = computed(() => this.flightResource.isLoading());
   error = this.flightResource.error;
@@ -160,17 +169,13 @@ export class FlightSearchComponent implements OnInit {
   }
 
   delay(): void {
-
-    this.delayInMinutes.update(m => m + 15);
+    this.delayInMinutes.update((m) => m + 15);
 
     // TODO: Make Immutable!
-
   }
 }
 
-
 function toDelayed(flights: Flight[], delayInMinutes: number): Flight[] {
-
   if (flights.length === 0) {
     return [];
   }
@@ -182,13 +187,10 @@ function toDelayed(flights: Flight[], delayInMinutes: number): Flight[] {
   const newDate = new Date(oldDate.getTime() + 1000 * 60 * delayInMinutes);
   const newFlight: Flight = {
     ...oldFlight,
-    date: newDate.toString()
+    date: newDate.toString(),
   };
 
-  const newFlights: Flight[] = [
-    newFlight,
-    ...oldFlights.slice(1),
-  ];
+  const newFlights: Flight[] = [newFlight, ...oldFlights.slice(1)];
 
   return newFlights;
 }

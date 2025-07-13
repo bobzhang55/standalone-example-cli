@@ -29,7 +29,7 @@ export interface RxResourceOptions<T, R>
  * @experimental
  */
 export function rxResource<T, R>(
-  opts: RxResourceOptions<T, R>,
+  opts: RxResourceOptions<T, R>
 ): ResourceRef<T> {
   opts?.injector || assertInInjectionContext(rxResource);
   return resource<T, R>({

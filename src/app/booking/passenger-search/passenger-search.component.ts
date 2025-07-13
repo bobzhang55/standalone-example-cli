@@ -1,13 +1,13 @@
-import { JsonPipe } from "@angular/common";
-import { HttpClient } from "@angular/common/http";
-import { Component, inject } from "@angular/core";
-import { Passenger} from '../../data/passenger';
+import { JsonPipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
+import { Passenger } from '../../data/passenger';
 
 @Component({
-    selector: 'app-passenger-search',
-    templateUrl: './passenger-search.component.html',
-    standalone: true,
-    imports: []
+  selector: 'app-passenger-search',
+  templateUrl: './passenger-search.component.html',
+  standalone: true,
+  imports: [],
 })
 export class PassengerSearchComponent {
   private http = inject(HttpClient);
@@ -16,11 +16,8 @@ export class PassengerSearchComponent {
 
   constructor() {
     const url = 'https://demo.angulararchitects.io/api/passenger';
-    this.http.get<Passenger[]>(url).subscribe(
-      passengers => {
-        this.passengers = passengers;
-      }
-    );
+    this.http.get<Passenger[]>(url).subscribe((passengers) => {
+      this.passengers = passengers;
+    });
   }
-
 }

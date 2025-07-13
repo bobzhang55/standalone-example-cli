@@ -50,7 +50,7 @@ export function resource<T, R>(options: ResourceOptions<T, R>): ResourceRef<T> {
     request,
     options.loader,
     options.equal,
-    options.injector,
+    options.injector
   );
 }
 
@@ -115,7 +115,7 @@ abstract class BaseWritableResource<T> implements WritableResource<T> {
    */
   protected setValueState(
     status: ResourceStatus,
-    value: T | undefined = undefined,
+    value: T | undefined = undefined
   ): void {
     this.status.set(status);
     this.rawSetValue(value);
@@ -159,7 +159,7 @@ class WritableResourceImpl<T, R>
     requestFn: () => R,
     private readonly loaderFn: ResourceLoader<T, R>,
     equal: ValueEqualityFn<T> | undefined,
-    injector: Injector | undefined,
+    injector: Injector | undefined
   ) {
     super(equal);
     injector = injector ?? inject(Injector);
@@ -246,7 +246,7 @@ class WritableResourceImpl<T, R>
           previous: {
             status: previousStatus,
           },
-        }),
+        })
       );
       if (abortSignal.aborted) {
         // This load operation was cancelled.
@@ -285,7 +285,7 @@ class WritableResourceImpl<T, R>
  * Wraps an equality function to handle either value being `undefined`.
  */
 function wrapEqualityFn<T>(
-  equal: ValueEqualityFn<T>,
+  equal: ValueEqualityFn<T>
 ): ValueEqualityFn<T | undefined> {
   return (a, b) => (a === undefined || b === undefined ? a === b : equal(a, b));
 }

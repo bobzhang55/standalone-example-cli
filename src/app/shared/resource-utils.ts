@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 
 export function wait(
   msec: number,
-  signal: AbortSignal | undefined = undefined,
+  signal: AbortSignal | undefined = undefined
 ) {
   return new Promise<void>((resolve, reject) => {
     if (signal?.aborted) {
@@ -25,7 +25,7 @@ export function wait(
 
 export function debounce<T, U>(
   loader: ResourceLoader<T, U>,
-  time = 300,
+  time = 300
 ): ResourceLoader<T, U> {
   return async (param) => {
     await wait(time, param.abortSignal);
@@ -34,7 +34,7 @@ export function debounce<T, U>(
 }
 
 export function skipInitial<T, U>(
-  loader: ResourceLoader<T, U>,
+  loader: ResourceLoader<T, U>
 ): ResourceLoader<T, U> {
   let first = true;
   return (param) => {
@@ -46,9 +46,12 @@ export function skipInitial<T, U>(
   };
 }
 
-export function debounceTrue(computation: () => boolean, time = 300): Signal<boolean> {
+export function debounceTrue(
+  computation: () => boolean,
+  time = 300
+): Signal<boolean> {
   const value = computed(() => computation());
-  
+
   const debouncedResource = resource({
     request: value,
     loader: async (param) => {
@@ -58,16 +61,18 @@ export function debounceTrue(computation: () => boolean, time = 300): Signal<boo
         return true;
       }
       return false;
-    } 
+    },
   });
 
   return computed(() => debouncedResource.value() ?? false);
 }
 
-export type RxResourceLoader<T,R> = (params: ResourceLoaderParams<R>) => Observable<T>;
+export type RxResourceLoader<T, R> = (
+  params: ResourceLoaderParams<R>
+) => Observable<T>;
 
 export function rxSkipInitial<T, U>(
-  loader: RxResourceLoader<T, U>,
+  loader: RxResourceLoader<T, U>
 ): RxResourceLoader<T, U> {
   let first = true;
   return (param) => {

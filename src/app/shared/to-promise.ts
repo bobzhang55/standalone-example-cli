@@ -3,7 +3,7 @@ import { takeUntil } from 'rxjs/operators';
 
 export async function toPromise<T>(
   observable: Observable<T>,
-  signal: AbortSignal | undefined = undefined,
+  signal: AbortSignal | undefined = undefined
 ): Promise<T> {
   const abortSubject = new ReplaySubject<void>(1);
   if (signal) {

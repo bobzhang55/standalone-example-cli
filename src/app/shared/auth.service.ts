@@ -1,22 +1,21 @@
 import { Injectable } from '@angular/core';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-    
-    userName = 'Max';
-    
-    isAuthenticated(): boolean {
-        if (this.userName) {
-            return true;
-        }
-        return false;
-    }
+  userName = 'Max';
 
-    login(userName: string): void {
-        this.userName = userName;
+  isAuthenticated(): boolean {
+    if (this.userName) {
+      return true;
     }
+    return false;
+  }
 
-    logout(): void {
-        this.userName = '';
-    }
+  login(userName: string): void {
+    this.userName = userName;
+  }
+
+  logout(): void {
+    this.userName = '';
+  }
 }

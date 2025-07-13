@@ -7,10 +7,22 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { WritableSignal, Signal, isDevMode } from "@angular/core";
-import { consumerAfterComputation, consumerBeforeComputation, defaultEquals, producerAccessed, producerUpdateValueVersion, REACTIVE_NODE, ReactiveNode, SIGNAL, signalSetFn, signalUpdateFn, ValueEqualityFn } from "@angular/core/primitives/signals";
+import { WritableSignal, Signal, isDevMode } from '@angular/core';
+import {
+  consumerAfterComputation,
+  consumerBeforeComputation,
+  defaultEquals,
+  producerAccessed,
+  producerUpdateValueVersion,
+  REACTIVE_NODE,
+  ReactiveNode,
+  SIGNAL,
+  signalSetFn,
+  signalUpdateFn,
+  ValueEqualityFn,
+} from '@angular/core/primitives/signals';
 
-type ComputationFn<S, D> = (source: S, previous?: {source: S; value: D}) => D;
+type ComputationFn<S, D> = (source: S, previous?: { source: S; value: D }) => D;
 
 interface LinkedSignalNode<S, D> extends ReactiveNode {
   /**
@@ -52,7 +64,9 @@ const identityFn = <T>(v: T) => v;
 /**
  * Create a linked signal which represents state that is (re)set from a linked reactive expression.
  */
-function createLinkedSignal<S, D>(node: LinkedSignalNode<S, D>): WritableSignal<D> {
+function createLinkedSignal<S, D>(
+  node: LinkedSignalNode<S, D>
+): WritableSignal<D> {
   const linkedSignalGetter = () => {
     // Check if the value needs updating before returning it.
     producerUpdateValueVersion(node);
@@ -67,7 +81,8 @@ function createLinkedSignal<S, D>(node: LinkedSignalNode<S, D>): WritableSignal<
     return node.value;
   };
 
-  const getter = linkedSignalGetter as LinkedSignalGetter<S, D> & WritableSignal<D>;
+  const getter = linkedSignalGetter as LinkedSignalGetter<S, D> &
+    WritableSignal<D>;
   getter[SIGNAL] = node;
 
   if (isDevMode()) {
@@ -96,11 +111,14 @@ function createLinkedSignal<S, D>(node: LinkedSignalNode<S, D>): WritableSignal<
  */
 export function linkedSignal<D>(
   computation: () => D,
-  options?: {equal?: ValueEqualityFn<NoInfer<D>>},
+  options?: { equal?: ValueEqualityFn<NoInfer<D>> }
 ): WritableSignal<D>;
 export function linkedSignal<S, D>(options: {
   source: () => S;
-  computation: (source: NoInfer<S>, previous?: {source: NoInfer<S>; value: NoInfer<D>}) => D;
+  computation: (
+    source: NoInfer<S>,
+    previous?: { source: NoInfer<S>; value: NoInfer<D> }
+  ) => D;
   equal?: ValueEqualityFn<NoInfer<D>>;
 }): WritableSignal<D>;
 export function linkedSignal<S, D>(
@@ -111,15 +129,21 @@ export function linkedSignal<S, D>(
         equal?: ValueEqualityFn<D>;
       }
     | (() => D),
-  options?: {equal?: ValueEqualityFn<D>},
+  options?: { equal?: ValueEqualityFn<D> }
 ): WritableSignal<D> {
-//   performanceMarkFeature('NgSignals');
+  //   performanceMarkFeature('NgSignals');
 
   const isShorthand = typeof optionsOrComputation === 'function';
-  const node: LinkedSignalNode<unknown, unknown> = Object.create(LINKED_SIGNAL_NODE);
-  node.source = isShorthand ? optionsOrComputation : optionsOrComputation.source;
+  const node: LinkedSignalNode<unknown, unknown> =
+    Object.create(LINKED_SIGNAL_NODE);
+  node.source = isShorthand
+    ? optionsOrComputation
+    : optionsOrComputation.source;
   if (!isShorthand) {
-    node.computation = optionsOrComputation.computation as ComputationFn<unknown, unknown>;
+    node.computation = optionsOrComputation.computation as ComputationFn<
+      unknown,
+      unknown
+    >;
   }
   const equal = isShorthand ? options?.equal : optionsOrComputation.equal;
   if (equal) {
@@ -195,7 +219,11 @@ const LINKED_SIGNAL_NODE = /* @__PURE__ */ (() => {
         consumerAfterComputation(node, prevConsumer);
       }
 
-      if (oldValue !== UNSET && newValue !== ERRORED && node.equal(oldValue, newValue)) {
+      if (
+        oldValue !== UNSET &&
+        newValue !== ERRORED &&
+        node.equal(oldValue, newValue)
+      ) {
         // No change to `valueVersion` - old and new values are
         // semantically equivalent.
         node.value = oldValue;

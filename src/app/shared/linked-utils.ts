@@ -6,7 +6,7 @@ export type DeepLink<T> = {
 };
 
 export function deepLink<T extends Record<string, unknown>>(
-  source: Signal<T>,
+  source: Signal<T>
 ): DeepLink<T> {
   const value = untracked(source);
   const result: Record<string, WritableSignal<unknown>> = {};

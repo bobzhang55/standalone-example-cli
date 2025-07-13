@@ -34,7 +34,7 @@ export class LoggerService {
     }
 
     if (this.config.chaining && this.parentLogger) {
-        this.parentLogger.log(level, category, msg);
+      this.parentLogger.log(level, category, msg);
     }
   }
 

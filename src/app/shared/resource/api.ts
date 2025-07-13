@@ -1,6 +1,11 @@
 // Taken from: https://github.com/angular/angular/blob/c611cd227045134553748df384c1458019882642/packages/core/src/resource/api.ts
 
-import { Signal, WritableSignal, ValueEqualityFn, Injector } from "@angular/core";
+import {
+  Signal,
+  WritableSignal,
+  ValueEqualityFn,
+  Injector,
+} from '@angular/core';
 
 /**
  * @license
@@ -15,7 +20,13 @@ import { Signal, WritableSignal, ValueEqualityFn, Injector } from "@angular/core
  *
  * @experimental
  */
-export type ResourceStatus = 'idle' | 'error' | 'loading' | 'refreshing' | 'resolved' | 'local';
+export type ResourceStatus =
+  | 'idle'
+  | 'error'
+  | 'loading'
+  | 'refreshing'
+  | 'resolved'
+  | 'local';
 
 /**
  * A Resource is an asynchronous dependency (for example, the results of an API call) that is
@@ -56,7 +67,7 @@ export interface Resource<T> {
    *
    * This function is reactive.
    */
-  hasValue(): this is Resource<T> & {value: Signal<T>};
+  hasValue(): this is Resource<T> & { value: Signal<T> };
 
   /**
    * Instructs the resource to re-request any asynchronous dependency it may have.
@@ -78,7 +89,7 @@ export interface Resource<T> {
  */
 export interface WritableResource<T> extends Resource<T> {
   readonly value: WritableSignal<T | undefined>;
-  hasValue(): this is WritableResource<T> & {value: WritableSignal<T>};
+  hasValue(): this is WritableResource<T> & { value: WritableSignal<T> };
 
   /**
    * Convenience wrapper for `value.set`.
@@ -123,7 +134,9 @@ export interface ResourceLoaderParams<R> {
  *
  * @experimental
  */
-export type ResourceLoader<T, R> = (param: ResourceLoaderParams<R>) => PromiseLike<T>;
+export type ResourceLoader<T, R> = (
+  param: ResourceLoaderParams<R>
+) => PromiseLike<T>;
 
 /**
  * Options to the `resource` function, for creating a resource.
